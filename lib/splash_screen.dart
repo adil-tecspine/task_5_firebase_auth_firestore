@@ -4,12 +4,11 @@ import 'package:task_5_firebase_auth_firestore/controller/splash_screen_controll
 import 'package:task_5_firebase_auth_firestore/utils/dimen.dart';
 
 class SplashScreen extends StatelessWidget {
-  SplashScreen({super.key});
-
-  final controller = Get.put(SplashScreenController());
+  const SplashScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(SplashScreenController());
     return Scaffold(
       body: Center(
         child: Column(

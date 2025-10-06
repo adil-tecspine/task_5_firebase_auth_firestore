@@ -26,9 +26,8 @@ class AuthRepository {
       );
       return userCredential.user;
     } on FirebaseAuthException catch (e) {
-      log('Error in signInWithEmailAndPassword: $e');
+      rethrow;
     }
-    return null;
   }
 
   // login with email and password
