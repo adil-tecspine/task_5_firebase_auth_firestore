@@ -1,0 +1,3 @@
+class Dimen {
+  Dimen._();
+}

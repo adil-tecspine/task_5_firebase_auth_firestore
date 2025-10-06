@@ -1,0 +1,3 @@
+class StringResources {
+  StringResources._();
+}
