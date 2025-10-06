@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task_5_firebase_auth_firestore/splash_screen.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -10,22 +11,6 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.orange),
       home: SplashScreen(),
-    );
-  }
-}
-
-class SplashScreen extends StatelessWidget {
-  const SplashScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [FlutterLogo(size: 100), CircularProgressIndicator()],
-        ),
-      ),
     );
   }
 }
