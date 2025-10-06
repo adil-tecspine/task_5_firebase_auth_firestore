@@ -14,4 +14,10 @@ class StringResources {
   static const String confirmPasswordLabel = 'Confirm Password';
   static const String alreadyHaveAccountPrompt =
       'Already have an account? Login';
+
+  static const String nameLabel = 'Name';
+  static const String enterName = 'Please enter your name';
+  static const String nameTooShort = 'Name must be at least 3 characters long';
+
+  static const String continueButton = 'Continue';
 }
