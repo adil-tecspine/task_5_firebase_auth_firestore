@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "291919757905",
+    "project_id": "fir-tecspine",
+    "storage_bucket": "fir-tecspine.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:291919757905:android:4ba6d828608fc972a46e70",
+        "android_client_info": {
+          "package_name": "com.adistudio.task_5_firebase_auth_firestore"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMJ52m6qBKv9LxkW0H_oRQK4iZtCrx5kg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
