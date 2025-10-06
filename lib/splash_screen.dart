@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:task_5_firebase_auth_firestore/controller/splash_screen_controller.dart';
 import 'package:task_5_firebase_auth_firestore/utils/dimen.dart';
 
 class SplashScreen extends StatelessWidget {
-  const SplashScreen({super.key});
+  SplashScreen({super.key});
+
+  final controller = Get.put(SplashScreenController());
 
   @override
   Widget build(BuildContext context) {
