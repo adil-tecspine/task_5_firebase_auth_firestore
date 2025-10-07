@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:task_5_firebase_auth_firestore/data/auth_repository.dart';
-import 'package:task_5_firebase_auth_firestore/home_screen.dart';
+import 'package:task_5_firebase_auth_firestore/models/login_type_enum.dart';
+import 'package:task_5_firebase_auth_firestore/registration_screen.dart';
 
 class SignupScreenController extends GetxController {
   final AuthRepository authRepository;
@@ -32,7 +33,7 @@ class SignupScreenController extends GetxController {
         status.value = RxStatus.success();
         Get.back();
         Get.snackbar('Success', 'Your account has been created successfully');
-        Get.off(() => const HomeScreen());
+        Get.off(() => RegistrationScreen(user, LoginType.email));
       }
     } catch (e) {
       Get.back();

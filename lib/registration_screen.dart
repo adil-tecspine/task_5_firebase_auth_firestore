@@ -1,11 +1,21 @@
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:task_5_firebase_auth_firestore/models/login_type_enum.dart';
+import 'package:task_5_firebase_auth_firestore/models/user_meta.dart';
 import 'package:task_5_firebase_auth_firestore/utils/dimen.dart';
 import 'package:task_5_firebase_auth_firestore/utils/string_resources.dart';
 
+import 'controller/registration_screen_controller.dart'
+    show RegistrationScreenController;
+
 class RegistrationScreen extends StatefulWidget {
-  const RegistrationScreen({super.key});
+  const RegistrationScreen(this.user, this.loginType, {super.key});
+
+  final User user;
+  final LoginType loginType;
 
   @override
   State<RegistrationScreen> createState() => _RegistrationScreenState();
@@ -28,21 +38,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     _nameController.dispose();
   }
 
-  void onSubmit() {
-    if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Processing Data')));
-      log('Name: ${_nameController.text.trim()}');
-    } else {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Validation Failed')));
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(RegistrationScreenController());
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -92,12 +90,27 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: onSubmit,
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Processing Data')),
+                          );
+                          final userMeta = UserMeta(
+                            email: widget.user.email!,
+                            name: _nameController.text.trim(),
+                            loginType: widget.loginType,
+                          );
+                          log(userMeta.toString());
+                          controller.saveUserMeta(userMeta, widget.user.uid);
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Validation Failed')),
+                          );
+                        }
+                      },
                       child: const Text(StringResources.continueButton),
                     ),
                   ),
-
-                  Text('Your Current Name is: UserXYZ'),
                 ],
               ),
             ),

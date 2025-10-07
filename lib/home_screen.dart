@@ -40,6 +40,20 @@ class HomeScreen extends StatelessWidget {
                   child: const Text('Logout'),
                 ),
               ),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    foregroundColor: Colors.white,
+                  ),
+                  onPressed: () {
+                    controller.deleteAccount();
+                  },
+                  icon: const Icon(Icons.delete),
+                  label: const Text('Delete Account'),
+                ),
+              ),
             ],
           ),
         ),

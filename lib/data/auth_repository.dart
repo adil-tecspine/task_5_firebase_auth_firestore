@@ -61,6 +61,16 @@ class AuthRepository {
   /// Helper method to convert a [User] to an [AppUser]
   AppUser? _convertUser(User? user) => user != null ? AppUser(user) : null;
 
+  // delete account method
+  Future<void> deleteAccount() async {
+    try {
+      await _auth.currentUser?.delete();
+    } on FirebaseAuthException catch (e) {
+      log('Error in deleteAccount: $e');
+      rethrow;
+    }
+  }
+
   // TODO: Implement Google sign-in method
 
   // TODO: Implement Facebook sign-in method

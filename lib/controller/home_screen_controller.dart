@@ -33,4 +33,25 @@ class HomeScreenController extends GetxController {
       status.value = RxStatus.error(e.toString());
     }
   }
+
+  void deleteAccount() async {
+    try {
+      status.value = RxStatus.loading();
+      Get.defaultDialog(
+        title: 'Deleting Account',
+        content: const CircularProgressIndicator(),
+        barrierDismissible: false,
+      );
+      await authRepository.deleteAccount();
+      status.value = RxStatus.success();
+      Get.back();
+      Get.off(() => const LoginScreen());
+      Get.snackbar('Success', 'Account deleted successfully');
+    } catch (e) {
+      Get.back();
+      log('Error in deleteAccount: $e');
+      Get.snackbar('Error', 'Account deletion failed. ${e.toString()}');
+      status.value = RxStatus.error(e.toString());
+    }
+  }
 }
