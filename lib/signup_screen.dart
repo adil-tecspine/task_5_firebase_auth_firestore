@@ -161,9 +161,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         IconButton(
                           onPressed: controller.status.value.isLoading
                               ? null
-                              : () {
-                                  // login with google
-                                },
+                              : () => controller.signupWithGoogle(),
                           icon: Icon(Icons.g_mobiledata, size: Dimen.s40),
                         ),
                         IconButton(
