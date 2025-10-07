@@ -144,7 +144,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             ? null
                             : () {
                                 if (_formKey.currentState!.validate()) {
-                                  controller.signup(
+                                  controller.signupWithEmailPassword(
                                     _emailController.text.trim(),
                                     _passwordController.text.trim(),
                                   );

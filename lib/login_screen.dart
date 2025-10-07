@@ -128,7 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ? null
                             : () {
                                 if (_formKey.currentState!.validate()) {
-                                  controller.login(
+                                  controller.loginWithEmailPassword(
                                     _emailController.text.trim(),
                                     _passwordController.text.trim(),
                                   );

@@ -10,7 +10,7 @@ class SignupScreenController extends GetxController {
 
   SignupScreenController() : authRepository = AuthRepository();
 
-  void signup(String email, String password) async {
+  void signupWithEmailPassword(String email, String password) async {
     try {
       status.value = RxStatus.loading();
       Get.defaultDialog(

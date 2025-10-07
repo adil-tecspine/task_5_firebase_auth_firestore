@@ -10,7 +10,7 @@ class LoginScreenController extends GetxController {
 
   LoginScreenController() : authRepository = AuthRepository();
 
-  void login(String email, String password) async {
+  void loginWithEmailPassword(String email, String password) async {
     try {
       status.value = RxStatus.loading();
       Get.defaultDialog(
