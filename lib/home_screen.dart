@@ -30,7 +30,10 @@ class HomeScreen extends StatelessWidget {
                     subtitle: Text(
                       controller.userMeta.value?.email ?? 'No Email',
                     ),
-                    trailing: Icon(Icons.email),
+                    trailing: Icon(
+                      controller.userMeta.value?.loginTypeIcon ??
+                          Icons.account_circle,
+                    ),
 
                     // tapping on the listitle opens up a dilaog with the name field to update the name of the person
                     onTap: () => showDialog(

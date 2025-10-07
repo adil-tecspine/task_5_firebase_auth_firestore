@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:task_5_firebase_auth_firestore/data/auth_repository.dart';
+import 'package:task_5_firebase_auth_firestore/data/user_meta_repository.dart';
 import 'package:task_5_firebase_auth_firestore/home_screen.dart';
+import 'package:task_5_firebase_auth_firestore/models/login_type_enum.dart';
+import 'package:task_5_firebase_auth_firestore/registration_screen.dart';
 
 class LoginScreenController extends GetxController {
   final AuthRepository authRepository;
+  final UserMetaRepository userMetaRepository;
 
   final Rx<RxStatus> status = RxStatus.empty().obs;
 
-  LoginScreenController() : authRepository = AuthRepository();
+  LoginScreenController()
+    : authRepository = AuthRepository(),
+      userMetaRepository = UserMetaRepository();
 
   void loginWithEmailPassword(String email, String password) async {
     try {
@@ -62,7 +68,15 @@ class LoginScreenController extends GetxController {
         status.value = RxStatus.success();
         Get.back();
         Get.snackbar('Success', 'Login successful');
-        Get.off(() => const HomeScreen());
+
+        final userMetaExists = await userMetaRepository.userMetaExists(
+          user.uid,
+        );
+        if (userMetaExists) {
+          Get.off(() => const HomeScreen());
+        } else {
+          Get.off(() => RegistrationScreen(user, LoginType.google));
+        }
       }
     } catch (e) {
       Get.back();
@@ -92,7 +106,14 @@ class LoginScreenController extends GetxController {
         status.value = RxStatus.success();
         Get.back();
         Get.snackbar('Success', 'Login successful');
-        Get.off(() => const HomeScreen());
+        final userMetaExists = await userMetaRepository.userMetaExists(
+          user.uid,
+        );
+        if (userMetaExists) {
+          Get.off(() => const HomeScreen());
+        } else {
+          Get.off(() => RegistrationScreen(user, LoginType.facebook));
+        }
       }
     } catch (e) {
       Get.back();

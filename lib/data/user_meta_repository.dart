@@ -31,4 +31,10 @@ class UserMetaRepository {
   Future<void> deleteUserMeta(String uid) async {
     await _firestore.collection('users').doc(uid).delete();
   }
+
+  // we need a function that checks if the user meta exists
+  Future<bool> userMetaExists(String uid) async {
+    DocumentSnapshot doc = await _firestore.collection('users').doc(uid).get();
+    return doc.exists;
+  }
 }
