@@ -9,7 +9,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(HomeScreenController());
+    final controller = Get.find<HomeScreenController>();
     return Scaffold(
       body: Padding(
         padding: EdgeInsetsGeometry.all(Dimen.s16),

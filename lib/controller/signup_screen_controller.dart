@@ -2,12 +2,40 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:task_5_firebase_auth_firestore/data/auth_repository.dart';
 import 'package:task_5_firebase_auth_firestore/models/login_type_enum.dart';
-import 'package:task_5_firebase_auth_firestore/registration_screen.dart';
+import 'package:task_5_firebase_auth_firestore/route/route_names.dart';
 
 class SignupScreenController extends GetxController {
   final AuthRepository authRepository;
 
   final Rx<RxStatus> status = RxStatus.empty().obs;
+
+  final _formKey = GlobalKey<FormState>();
+
+  late final TextEditingController _emailController;
+  late final TextEditingController _passwordController;
+  late final TextEditingController _confirmPasswordController;
+
+  GlobalKey<FormState> get formKey => _formKey;
+  TextEditingController get emailController => _emailController;
+  TextEditingController get passwordController => _passwordController;
+  TextEditingController get confirmPasswordController =>
+      _confirmPasswordController;
+
+  @override
+  void onInit() {
+    super.onInit();
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+    _confirmPasswordController = TextEditingController();
+  }
+
+  @override
+  void onClose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.onClose();
+  }
 
   SignupScreenController() : authRepository = AuthRepository();
 
@@ -33,7 +61,7 @@ class SignupScreenController extends GetxController {
         status.value = RxStatus.success();
         Get.back();
         Get.snackbar('Success', 'Your account has been created successfully');
-        Get.off(() => RegistrationScreen(user, LoginType.email));
+        Get.toNamed(RouteNames.register, arguments: [user, LoginType.email]);
       }
     } catch (e) {
       Get.back();
@@ -63,7 +91,7 @@ class SignupScreenController extends GetxController {
         status.value = RxStatus.success();
         Get.back();
         Get.snackbar('Success', 'Your account has been created successfully');
-        Get.off(() => RegistrationScreen(user, LoginType.google));
+        Get.toNamed(RouteNames.register, arguments: [user, LoginType.google]);
       }
     } catch (e) {
       Get.back();
@@ -93,7 +121,7 @@ class SignupScreenController extends GetxController {
         status.value = RxStatus.success();
         Get.back();
         Get.snackbar('Success', 'Your account has been created successfully');
-        Get.off(() => RegistrationScreen(user, LoginType.facebook));
+        Get.toNamed(RouteNames.register, arguments: [user, LoginType.facebook]);
       }
     } catch (e) {
       Get.back();

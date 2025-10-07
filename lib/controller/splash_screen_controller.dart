@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:task_5_firebase_auth_firestore/data/auth_repository.dart';
-import 'package:task_5_firebase_auth_firestore/home_screen.dart';
-import 'package:task_5_firebase_auth_firestore/login_screen.dart';
+import 'package:task_5_firebase_auth_firestore/route/route_names.dart';
 
 class SplashScreenController extends GetxController {
   final AuthRepository authRepository;
@@ -18,9 +17,9 @@ class SplashScreenController extends GetxController {
   void fetchUser() async {
     final user = authRepository.currentUser;
     if (user == null) {
-      Get.off(() => const LoginScreen());
+      Get.offNamed(RouteNames.login);
     } else {
-      Get.off(() => const HomeScreen());
+      Get.offNamed(RouteNames.home);
     }
   }
 }

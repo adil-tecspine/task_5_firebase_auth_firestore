@@ -4,39 +4,12 @@ import 'package:task_5_firebase_auth_firestore/controller/signup_screen_controll
 import 'package:task_5_firebase_auth_firestore/utils/dimen.dart';
 import 'package:task_5_firebase_auth_firestore/utils/string_resources.dart';
 
-class SignupScreen extends StatefulWidget {
+class SignupScreen extends StatelessWidget {
   const SignupScreen({super.key});
 
   @override
-  State<SignupScreen> createState() => _SignupScreenState();
-}
-
-class _SignupScreenState extends State<SignupScreen> {
-  final _formKey = GlobalKey<FormState>();
-
-  late final TextEditingController _emailController;
-  late final TextEditingController _passwordController;
-  late final TextEditingController _confirmPasswordController;
-
-  @override
-  void initState() {
-    super.initState();
-    _emailController = TextEditingController();
-    _passwordController = TextEditingController();
-    _confirmPasswordController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
-    _confirmPasswordController.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final controller = Get.put(SignupScreenController());
+    final controller = Get.find<SignupScreenController>();
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -54,12 +27,12 @@ class _SignupScreenState extends State<SignupScreen> {
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     Form(
-                      key: _formKey,
+                      key: controller.formKey,
                       child: Column(
                         spacing: Dimen.s16,
                         children: [
                           TextFormField(
-                            controller: _emailController,
+                            controller: controller.emailController,
                             enabled: !controller.status.value.isLoading,
                             decoration: const InputDecoration(
                               labelText: StringResources.emailLabel,
@@ -89,7 +62,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
                           // add validation to password field - not empty, at least 6 characters long
                           TextFormField(
-                            controller: _passwordController,
+                            controller: controller.passwordController,
                             enabled: !controller.status.value.isLoading,
                             decoration: const InputDecoration(
                               labelText: StringResources.passwordLabel,
@@ -112,7 +85,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
                           // add validation to confirm password field - not empty, matches password field
                           TextFormField(
-                            controller: _confirmPasswordController,
+                            controller: controller.confirmPasswordController,
                             enabled: !controller.status.value.isLoading,
                             decoration: const InputDecoration(
                               labelText: StringResources.confirmPasswordLabel,
@@ -126,7 +99,8 @@ class _SignupScreenState extends State<SignupScreen> {
                               if (value == null || value.isEmpty) {
                                 return 'Please confirm your password';
                               }
-                              if (value != _passwordController.text.trim()) {
+                              if (value !=
+                                  controller.passwordController.text.trim()) {
                                 return 'Passwords do not match';
                               }
                               return null;
@@ -143,10 +117,11 @@ class _SignupScreenState extends State<SignupScreen> {
                         onPressed: controller.status.value.isLoading
                             ? null
                             : () {
-                                if (_formKey.currentState!.validate()) {
+                                if (controller.formKey.currentState!
+                                    .validate()) {
                                   controller.signupWithEmailPassword(
-                                    _emailController.text.trim(),
-                                    _passwordController.text.trim(),
+                                    controller.emailController.text.trim(),
+                                    controller.passwordController.text.trim(),
                                   );
                                 }
                               },

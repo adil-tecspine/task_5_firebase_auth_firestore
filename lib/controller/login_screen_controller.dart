@@ -2,13 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:task_5_firebase_auth_firestore/data/auth_repository.dart';
 import 'package:task_5_firebase_auth_firestore/data/user_meta_repository.dart';
-import 'package:task_5_firebase_auth_firestore/home_screen.dart';
 import 'package:task_5_firebase_auth_firestore/models/login_type_enum.dart';
-import 'package:task_5_firebase_auth_firestore/registration_screen.dart';
+import 'package:task_5_firebase_auth_firestore/route/route_names.dart';
 
 class LoginScreenController extends GetxController {
   final AuthRepository authRepository;
   final UserMetaRepository userMetaRepository;
+  late final TextEditingController _emailController;
+  late final TextEditingController _passwordController;
+
+  final _formKey = GlobalKey<FormState>();
+
+  GlobalKey<FormState> get formKey => _formKey;
+  TextEditingController get emailController => _emailController;
+  TextEditingController get passwordController => _passwordController;
+
+  @override
+  void onInit() {
+    super.onInit();
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+  }
+
+  @override
+  void onClose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.onClose();
+  }
 
   final Rx<RxStatus> status = RxStatus.empty().obs;
 
@@ -38,7 +59,7 @@ class LoginScreenController extends GetxController {
         status.value = RxStatus.success();
         Get.back();
         Get.snackbar('Success', 'Login successful');
-        Get.off(() => const HomeScreen());
+        Get.offNamed(RouteNames.home);
       }
     } catch (e) {
       Get.back();
@@ -73,9 +94,12 @@ class LoginScreenController extends GetxController {
           user.uid,
         );
         if (userMetaExists) {
-          Get.off(() => const HomeScreen());
+          Get.offNamed(RouteNames.home);
         } else {
-          Get.off(() => RegistrationScreen(user, LoginType.google));
+          Get.offNamed(
+            RouteNames.register,
+            arguments: [user, LoginType.google],
+          );
         }
       }
     } catch (e) {
@@ -110,9 +134,12 @@ class LoginScreenController extends GetxController {
           user.uid,
         );
         if (userMetaExists) {
-          Get.off(() => const HomeScreen());
+          Get.offNamed(RouteNames.home);
         } else {
-          Get.off(() => RegistrationScreen(user, LoginType.facebook));
+          Get.offNamed(
+            RouteNames.register,
+            arguments: [user, LoginType.facebook],
+          );
         }
       }
     } catch (e) {

@@ -11,36 +11,16 @@ import 'package:task_5_firebase_auth_firestore/utils/string_resources.dart';
 import 'controller/registration_screen_controller.dart'
     show RegistrationScreenController;
 
-class RegistrationScreen extends StatefulWidget {
-  const RegistrationScreen(this.user, this.loginType, {super.key});
-
-  final User user;
-  final LoginType loginType;
-
-  @override
-  State<RegistrationScreen> createState() => _RegistrationScreenState();
-}
-
-class _RegistrationScreenState extends State<RegistrationScreen> {
-  final _formKey = GlobalKey<FormState>();
-
-  late final TextEditingController _nameController;
-
-  @override
-  void initState() {
-    super.initState();
-    _nameController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _nameController.dispose();
-  }
+class RegistrationScreen extends StatelessWidget {
+  const RegistrationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(RegistrationScreenController());
+    final controller = Get.find<RegistrationScreenController>();
+    final arguments = Get.arguments;
+    final User user = arguments['user'] as User;
+    final LoginType loginType = arguments['loginType'] as LoginType;
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -57,12 +37,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   Form(
-                    key: _formKey,
+                    key: controller.formKey,
                     child: Column(
                       spacing: Dimen.s16,
                       children: [
                         TextFormField(
-                          controller: _nameController,
+                          controller: controller.nameController,
                           decoration: const InputDecoration(
                             labelText: StringResources.nameLabel,
                             border: OutlineInputBorder(),
@@ -91,17 +71,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        if (_formKey.currentState!.validate()) {
+                        if (controller.formKey.currentState!.validate()) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Processing Data')),
                           );
                           final userMeta = UserMeta(
-                            email: widget.user.email!,
-                            name: _nameController.text.trim(),
-                            loginType: widget.loginType,
+                            email: user.email!,
+                            name: controller.nameController.text.trim(),
+                            loginType: loginType,
                           );
                           log(userMeta.toString());
-                          controller.saveUserMeta(userMeta, widget.user.uid);
+                          controller.saveUserMeta(userMeta, user.uid);
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Validation Failed')),
