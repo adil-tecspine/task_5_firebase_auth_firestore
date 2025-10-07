@@ -144,9 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         IconButton(
                           onPressed: controller.status.value.isLoading
                               ? null
-                              : () {
-                                  // login with google
-                                },
+                              : () => controller.loginWithGoogle(),
                           icon: Icon(Icons.g_mobiledata, size: Dimen.s40),
                         ),
                         IconButton(
