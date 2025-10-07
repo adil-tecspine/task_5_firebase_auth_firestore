@@ -72,4 +72,34 @@ class SignupScreenController extends GetxController {
       status.value = RxStatus.error(e.toString());
     }
   }
+
+  // signup with facebook
+  void signupWithFacebook() async {
+    try {
+      status.value = RxStatus.loading();
+      Get.defaultDialog(
+        title: 'Signing Up',
+        content: const CircularProgressIndicator(),
+        barrierDismissible: false,
+      );
+      final user = await authRepository.signInWithFacebook();
+
+      if (user == null) {
+        status.value = RxStatus.error('User is null');
+        Get.back();
+        Get.snackbar('Error', 'Signup failed.');
+        return;
+      } else {
+        status.value = RxStatus.success();
+        Get.back();
+        Get.snackbar('Success', 'Your account has been created successfully');
+        Get.off(() => RegistrationScreen(user, LoginType.facebook));
+      }
+    } catch (e) {
+      Get.back();
+      Get.snackbar('Error', 'Signup failed. ${e.toString()}');
+
+      status.value = RxStatus.error(e.toString());
+    }
+  }
 }

@@ -168,7 +168,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           onPressed: controller.status.value.isLoading
                               ? null
                               : () {
-                                  // login with facebook
+                                  controller.signupWithFacebook();
                                 },
                           icon: Icon(Icons.facebook, size: Dimen.s40),
                         ),

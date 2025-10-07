@@ -65,7 +65,9 @@ class HomeScreenController extends GetxController {
         content: const CircularProgressIndicator(),
         barrierDismissible: false,
       );
+      final uid = authRepository.currentUser?.uid;
       await authRepository.deleteAccount();
+      await userMetaRepository.deleteUserMeta(uid ?? '');
       status.value = RxStatus.success();
       Get.back();
       Get.off(() => const LoginScreen());

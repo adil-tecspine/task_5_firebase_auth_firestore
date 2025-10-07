@@ -150,9 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         IconButton(
                           onPressed: controller.status.value.isLoading
                               ? null
-                              : () {
-                                  // login with facebook
-                                },
+                              : () => controller.loginWithFacebook(),
                           icon: Icon(Icons.facebook, size: Dimen.s40),
                         ),
                       ],

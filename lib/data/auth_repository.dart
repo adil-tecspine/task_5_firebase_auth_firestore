@@ -1,18 +1,21 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:task_5_firebase_auth_firestore/models/app_user.dart';
 
 class AuthRepository {
   final FirebaseAuth _auth;
   final GoogleSignIn _googleSignIn;
+  final FacebookAuth _facebookAuth;
 
-  AuthRepository._internal(this._auth, this._googleSignIn);
+  AuthRepository._internal(this._auth, this._googleSignIn, this._facebookAuth);
 
   static final AuthRepository instance = AuthRepository._internal(
     FirebaseAuth.instance,
     GoogleSignIn.instance,
+    FacebookAuth.instance,
   );
 
   factory AuthRepository() => instance;
@@ -28,7 +31,7 @@ class AuthRepository {
         password: password,
       );
       return userCredential.user;
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException {
       rethrow;
     }
   }
@@ -74,7 +77,6 @@ class AuthRepository {
     }
   }
 
-  // TODO: Implement Google sign-in method
   Future<User?> signInWithGoogle() async {
     final signIn = _googleSignIn;
     try {
@@ -129,5 +131,27 @@ class AuthRepository {
     }
   }
 
-  // TODO: Implement Facebook sign-in method
+  Future<User?> signInWithFacebook() async {
+    // Trigger the sign-in flow
+    final LoginResult loginResult = await _facebookAuth.login();
+
+    if (loginResult.status == LoginStatus.success) {
+      final String token = loginResult.accessToken!.tokenString;
+      final OAuthCredential facebookAuthCredential =
+          FacebookAuthProvider.credential(token);
+      // Once signed in, return the UserCredential
+      final UserCredential userCredential = await _auth.signInWithCredential(
+        facebookAuthCredential,
+      );
+      return userCredential.user;
+    } else if (loginResult.status == LoginStatus.cancelled) {
+      // User cancelled the login
+      log('Facebook login cancelled by user.');
+      return null;
+    } else {
+      // Login failed
+      log('Facebook login failed: ${loginResult.message}');
+    }
+    return null;
+  }
 }

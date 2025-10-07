@@ -27,4 +27,8 @@ class UserMetaRepository {
   Future<void> updateUserName(String uid, String name) async {
     await _firestore.collection('users').doc(uid).update({'name': name});
   }
+
+  Future<void> deleteUserMeta(String uid) async {
+    await _firestore.collection('users').doc(uid).delete();
+  }
 }
