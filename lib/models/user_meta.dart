@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:task_5_firebase_auth_firestore/models/login_type_enum.dart';
 
 class UserMeta extends Equatable {
@@ -14,6 +15,17 @@ class UserMeta extends Equatable {
 
   Map<String, dynamic> toMap() {
     return {'name': name, 'email': email, 'loginType': loginType.name};
+  }
+
+  IconData get loginTypeIcon {
+    switch (loginType) {
+      case LoginType.email:
+        return Icons.email;
+      case LoginType.google:
+        return Icons.g_mobiledata;
+      case LoginType.facebook:
+        return Icons.facebook;
+    }
   }
 
   factory UserMeta.fromMap(Map<String, dynamic> map) {

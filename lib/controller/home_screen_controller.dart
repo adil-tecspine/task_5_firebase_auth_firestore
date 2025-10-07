@@ -3,14 +3,37 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:task_5_firebase_auth_firestore/data/auth_repository.dart';
+import 'package:task_5_firebase_auth_firestore/data/user_meta_repository.dart';
 import 'package:task_5_firebase_auth_firestore/login_screen.dart';
+import 'package:task_5_firebase_auth_firestore/models/user_meta.dart';
 
 class HomeScreenController extends GetxController {
   final AuthRepository authRepository;
+  final UserMetaRepository userMetaRepository;
 
-  final Rx<RxStatus> status = RxStatus.empty().obs;
+  final Rx<RxStatus> status = RxStatus.loading().obs;
+  final Rx<UserMeta?> userMeta = Rx<UserMeta?>(null);
 
-  HomeScreenController() : authRepository = AuthRepository();
+  HomeScreenController()
+    : authRepository = AuthRepository(),
+      userMetaRepository = UserMetaRepository() {
+    loadUserMeta();
+  }
+
+  void loadUserMeta() async {
+    try {
+      final uid = authRepository.currentUser?.uid;
+      if (uid == null) {
+        Get.off(() => const LoginScreen());
+        return;
+      }
+      userMeta.value = await userMetaRepository.getUserMeta(uid);
+      status.value = RxStatus.success();
+    } catch (e) {
+      log('Error in loadUserMeta: $e');
+      status.value = RxStatus.error(e.toString());
+    }
+  }
 
   void logout() async {
     try {

@@ -14,48 +14,59 @@ class HomeScreen extends StatelessWidget {
       body: Padding(
         padding: EdgeInsetsGeometry.all(Dimen.s16),
         child: Center(
-          child: Column(
-            spacing: Dimen.s20,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Card(
-                child: ListTile(
-                  title: Text('Adil Azhar'),
-                  subtitle: Text('adilazhar6015@gmail.com'),
-                  trailing: Icon(Icons.email),
+          child: Obx(() {
+            if (controller.status.value.isLoading) {
+              return const CircularProgressIndicator();
+            } else if (controller.userMeta.value == null) {
+              return const Text('No user data available');
+            }
+            return Column(
+              spacing: Dimen.s20,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Card(
+                  child: ListTile(
+                    title: Text(controller.userMeta.value?.name ?? 'No Name'),
+                    subtitle: Text(
+                      controller.userMeta.value?.email ?? 'No Email',
+                    ),
+                    trailing: Icon(Icons.email),
 
-                  // tapping on the listitle opens up a dilaog with the name field to update the name of the person
-                  onTap: () => showDialog(
-                    context: context,
-                    builder: (context) => UpdateProfileWidget('Adil Azhar'),
+                    // tapping on the listitle opens up a dilaog with the name field to update the name of the person
+                    onTap: () => showDialog(
+                      context: context,
+                      builder: (context) => UpdateProfileWidget(
+                        controller.userMeta.value?.name ?? 'No Name',
+                      ),
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    controller.logout();
-                  },
-                  child: const Text('Logout'),
-                ),
-              ),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                    foregroundColor: Colors.white,
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      controller.logout();
+                    },
+                    child: const Text('Logout'),
                   ),
-                  onPressed: () {
-                    controller.deleteAccount();
-                  },
-                  icon: const Icon(Icons.delete),
-                  label: const Text('Delete Account'),
                 ),
-              ),
-            ],
-          ),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      foregroundColor: Colors.white,
+                    ),
+                    onPressed: () {
+                      controller.deleteAccount();
+                    },
+                    icon: const Icon(Icons.delete),
+                    label: const Text('Delete Account'),
+                  ),
+                ),
+              ],
+            );
+          }),
         ),
       ),
     );
