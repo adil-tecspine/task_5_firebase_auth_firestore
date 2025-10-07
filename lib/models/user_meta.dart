@@ -1,22 +1,5 @@
 import 'package:equatable/equatable.dart';
-
-/* We are going to store for each user 
-- Name
-- Email
-- Login Type (Google, Facebook, Email)
-
-and store the data in Firestore under a collection named "users"
-and for each user document, we will use the user's UID as the document ID.
-users collection
-  |
-  |--- userUID (document)
-         |
-         |--- name: "User's Name"
-         |--- email: "user@example.com"
-          |--- loginType: "google" / "facebook" / "email"
-*/
-
-enum LoginType { google, facebook, email }
+import 'package:task_5_firebase_auth_firestore/models/login_type_enum.dart';
 
 class UserMeta extends Equatable {
   final String name;
