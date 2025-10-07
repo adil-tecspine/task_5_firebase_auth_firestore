@@ -1,5 +1,6 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:task_5_firebase_auth_firestore/controller/home_screen_controller.dart';
 
 class UpdateProfileWidget extends StatefulWidget {
   const UpdateProfileWidget(this.name, {super.key});
@@ -26,15 +27,9 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
     super.dispose();
   }
 
-  void onSubmit() {
-    if (_formKey.currentState?.validate() ?? false) {
-      Navigator.of(context).pop();
-      log('Name: ${_nameController.text}');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<HomeScreenController>();
     return AlertDialog(
       title: Text('Update Profile'),
       // name must be 3 characters long and not empty
@@ -65,7 +60,18 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
           onPressed: () => Navigator.of(context).pop(),
           child: Text('Cancel'),
         ),
-        ElevatedButton(onPressed: onSubmit, child: Text('Update')),
+        ElevatedButton(
+          onPressed: () {
+            if (_formKey.currentState?.validate() ?? false) {
+              final newName = _nameController.text.trim();
+              if (newName != widget.name) {
+                controller.updateUserName(newName);
+              }
+              Navigator.of(context).pop();
+            }
+          },
+          child: Text('Update'),
+        ),
       ],
     );
   }

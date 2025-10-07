@@ -23,4 +23,8 @@ class UserMetaRepository {
     }
     return null;
   }
+
+  Future<void> updateUserName(String uid, String name) async {
+    await _firestore.collection('users').doc(uid).update({'name': name});
+  }
 }

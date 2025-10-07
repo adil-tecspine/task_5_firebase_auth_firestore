@@ -77,4 +77,24 @@ class HomeScreenController extends GetxController {
       status.value = RxStatus.error(e.toString());
     }
   }
+
+  void updateUserName(String newName) async {
+    try {
+      status.value = RxStatus.loading();
+      final uid = authRepository.currentUser?.uid;
+      if (uid == null) {
+        Get.off(() => const LoginScreen());
+        return;
+      }
+      await userMetaRepository.updateUserName(uid, newName);
+      // Update local userMeta
+      userMeta.value = userMeta.value?.copyWith(name: newName);
+      status.value = RxStatus.success();
+      Get.snackbar('Success', 'Name updated successfully');
+    } catch (e) {
+      log('Error in updateUserName: $e');
+      Get.snackbar('Error', 'Name update failed. ${e.toString()}');
+      status.value = RxStatus.error(e.toString());
+    }
+  }
 }
